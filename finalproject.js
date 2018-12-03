@@ -59,3 +59,18 @@ function dude(){
       quad(10,20, -10,20, -20,80, -10,90);
    pop();
 }
+
+function drawNote(x,y,rot){
+	push();
+		translate(x,y);
+		rotate(rot);
+		stroke(255);
+		fill(255);
+		strokeWeight(2);
+		line(-5,0, 5,0);
+		line(-5,0, -5,10);
+		line(5,0, 5,7);
+		ellipse(-7,10, 5);
+		ellipse(3,7, 5);
+	pop();
+}
