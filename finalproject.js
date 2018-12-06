@@ -296,3 +296,31 @@ function deadEmoji(x, y){
 
 		line(-40, 30, 35, 30)
 }
+function GameOverBigGuy() {
+	background(0)
+
+	push();
+		translate(0, -50)
+
+			fill(255, 0 ,0);
+			textSize(70);
+			textStyle(BOLD)
+			text('Game Over', width/25, height/3)
+	pop();
+
+			fill(255)
+			textSize(15)
+			text('BOOM! POP! POW! He pummels you over and over', width/12, 2*height/3)
+
+
+		push();
+
+			translate(width/2, height/2)
+			rotate(3/2*PI)
+			dude(-130, -50)
+		pop();
+
+	deadEmoji(width/2, 165)
+
+}
+
