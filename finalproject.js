@@ -7,14 +7,15 @@ function setup() {
 	hairX=130;
 	hairY=137;
 }
+
 function draw() {
 	background(255);
 	dude();	
 }
 
-function dude(){
+function dude(x,y){
    push();
-      translate(200,200);
+      translate(x,y);
       //face
       fill(190,140,90);
       ellipse(0,0, 30,40);
@@ -47,17 +48,20 @@ function dude(){
       //arm
       fill(0,200,0);
       push();
-         translate(0,30);
+         translate(0,40);
+         rotate(arm_rot);
          rect(0,0, 20,10);
       pop();
       //legs
       fill(0);
       push();
          translate(0,70);
+         rotate(r_rot);
          rect(0,0,7,40);
       pop();
       push();
          translate(-10,70);
+         rotate(l_rot);
          rect(0,0,7,40);
       pop();
       //cape
@@ -235,19 +239,18 @@ function boxer(){
 	pop();
 }
 
-function drawNote(x,y,rot){
-	push();
-		translate(x,y);
-		rotate(rot);
-		stroke(255);
-		fill(255);
-		strokeWeight(2);
-		line(-5,0, 5,0);
-		line(-5,0, -5,10);
-		line(5,0, 5,7);
-		ellipse(-7,10, 5);
-		ellipse(3,7, 5);
-	pop();
+function drawNote(x,y){
+   push();
+      translate(x,y);
+      stroke(255);
+      fill(255);
+      strokeWeight(2);
+      line(-5,0, 5,0);
+      line(-5,0, -5,10);
+      line(5,0, 5,7);
+      ellipse(-7,10, 5);
+      ellipse(3,7, 5);
+   pop();
 }
 
 function GameOverTavern() {
