@@ -249,3 +249,50 @@ function drawNote(x,y,rot){
 		ellipse(3,7, 5);
 	pop();
 }
+
+function GameOver1() {
+	background(0)
+
+	push();
+		translate(0, -50)
+
+			fill(255, 0 ,0);
+			textSize(70);
+			textStyle(BOLD)
+			text('Game Over', width/25, height/3)
+	pop();
+
+			fill(255)
+			textSize(20)
+			text('You went to sleep and died of cancer' , width/10, 2*height/3)
+
+
+		push();
+
+			translate(width/2, height/2)
+			rotate(3/2*PI)
+			dude(-130, -50)
+		pop();
+}
+
+function deadEmoji(x, y){
+
+	translate(x, y)
+		fill(255,204,51);	
+		ellipse(0, 0, 150);
+		strokeWeight(5);
+
+	push();
+		
+		fill(0);
+		line(-40, -40 , -20, -20)
+		line(-40, -20, -20, -40)
+
+		translate(55, 0);
+		line(-40, -40 , -20, -20)
+		line(-40, -20, -20, -40)
+	pop();
+
+		line(-40, 30, 35, 30)
+
+}
