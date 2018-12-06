@@ -273,6 +273,7 @@ function GameOverTavern() {
 			rotate(3/2*PI)
 			dude(-130, -50)
 		pop();
+	deadEmoji(width/2, 165);
 }
 
 function deadEmoji(x, y){
@@ -294,5 +295,4 @@ function deadEmoji(x, y){
 	pop();
 
 		line(-40, 30, 35, 30)
-
 }
