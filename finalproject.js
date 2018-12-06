@@ -1,16 +1,36 @@
+//for dude
+var arm_rot;
+var r_rot;
+var l_rot;
+
+var boxeurX;
+var boxeurY;
+var boxeurRot;
+
 function setup() {
+
 	createCanvas(400, 400);
 	
+	//for boxeur
 	boxeurScale = 1;
-	boxeurX = 100;
-	boxeurY = 150;
 	hairX=130;
 	hairY=137;
+	boxeurX = 0;
+	boxeurY = 0;
+	boxeurRot = 0;
+
+	//for dude
+	arm_rot = 0;
+	r_rot = 0;
+	l_rot = 0;
+
 }
 
 function draw() {
+
 	background(255);
-	dude();	
+	outsideTavern();
+
 }
 
 function dude(x,y){
@@ -70,58 +90,62 @@ function dude(x,y){
    pop();
 }
 
-function boxer(){
-		//neck
+function boxeur(x, y) {
+	translate(x, y);
+
+	//neck
 	push();
-	translate(boxeurX, boxeurY);
+	translate(100, 150);
 	rotate(PI/3);
 	fill(247, 113, 120);
 	noStroke();
-	rect(boxeurX-94, boxeurY-197, 30, 98);
+	rect(100-94, 150-197, 30, 98);
 	pop();
 
 	//torso
 	fill(247, 113, 120);
 	push();
 	noStroke();
-	arc(boxeurX-25, boxeurY+43, 50, 50, HALF_PI, PI/2);
+	arc(100-25, 150+43, 50, 50, HALF_PI, PI/2);
 	pop();
 
 	//more torso
 	push();
 	stroke(247, 113, 120);
 	strokeWeight(6);
-	curve(boxeurX-50, boxeurY+20, boxeurX-65, boxeurY+130, boxeurX-48, boxeurY+45, boxeurX-30, boxeurY+95);
+	curve(100-50, 150+20, 100-65, 150+130, 100-48, 150+45, 100-30, 150+95);
 	pop();
 
 	//stomach
 	push();
 	noStroke();
-	translate(boxeurX, boxeurY);
+	translate(100, 150);
 	rotate(PI/20);
-	rect(boxeurX-142, boxeurY-100, 50, 80, 5);
+	rect(100-142, 150-100, 50, 80, 5);
 	pop();
 
 	//chest
 	push();
 	noStroke();
-	ellipse(boxeurX+25, boxeurY+50, 80, 55);
+	ellipse(100+25, 150+50, 80, 55);
 	pop();
 
 	//upper arm
 	push();
+	rotate(boxeurRot);
 	noStroke();
 	quad(123, 202, 160, 195, 185, 260, 143, 250);
 	strokeWeight(5);
 	stroke(247, 113, 120);
-	curve(boxeurX+44, boxeurY, boxeurX+39, boxeurY+90, boxeurX+80, boxeurY+120, boxeurX+48, boxeurY+120);
-	curve(boxeurX, boxeurY+200, boxeurX+60, boxeurY+60, boxeurX+85, boxeurY+110, boxeurX-50, boxeurY);
+	curve(100+44, 150, 100+39, 150+90, 100+80, 150+120, 100+48, 150+120);
+	curve(100, 150+200, 100+60, 150+60, 100+85, 150+110, 100-50, 150);
 	quad(153, 250, 161, 250, 199, 250, 179, 270);
 	pop();
 
 	//lower arm
 	push();
-	translate(boxeurX, boxeurY);
+	rotate(boxeurRot);
+	translate(100, 150);
 	rotate(PI/10);
 	noStroke();
 	rect(110, 0, 20, 95, 15);
@@ -129,6 +153,7 @@ function boxer(){
 
 	//hand part 1
 	push();
+	rotate(boxeurRot);
 	stroke(107, 68, 87);
 	strokeWeight(2);
 	line(205, 190, 220, 196);
@@ -142,18 +167,20 @@ function boxer(){
 
 	//hand part 2
 	push();
+	rotate(boxeurRot);
 	fill(76, 117, 169);
 	noStroke();
-	translate(boxeurX, boxeurY);
+	translate(100, 150);
 	rotate(PI/8);
 	rect(105, -40, 20, 12, 100);
 	pop();
 
 	//hand part 3
 	push();
+	rotate(boxeurRot);
 	fill(76, 117, 169);
 	noStroke();
-	translate(boxeurX, boxeurY);
+	translate(100, 150);
 	rotate(PI/10);
 	rect(108.5, -18, 8, 15, 100);
 	pop();
@@ -170,7 +197,7 @@ function boxer(){
 	//face
 	push();
 	noStroke();
-	translate(boxeurX, boxeurY);
+	translate(100, 150);
 	rotate(PI/5);
 	rect(30, -38, 17, 35, 10);
 	pop();
@@ -237,6 +264,7 @@ function boxer(){
 	strokeWeight(3);
 	curve(107, 365, 107, 368, 123, 367, 115, 353);
 	pop();
+
 }
 
 function drawNote(x,y){
@@ -327,3 +355,52 @@ function GameOverBigGuy() {
 
 }
 
+function outsideTavern() {
+	
+	dude(310, 200);
+	
+	push();
+		tavernDoor();
+		boxeur(boxeurX, boxeurY);
+		textBox(120, 25, "I am going to be the one \n to save the princess");
+		boxeurX += 3;
+		if(boxeurX >= 90) {
+			boxeurX -= 3;
+			boxeurY +=5;
+			if(boxeurY >= 30) {
+				boxeurY -= 5;
+				boxeurRot += PI/48;
+				if(boxeurRot >= PI/35) {
+					boxeurRot += -PI/40;
+				}
+			}
+		}
+	pop();	
+
+}
+
+function tavernDoor() {
+	push();
+		noFill();
+		line(75, 325, 350, 325);
+		line(75, 50, 75, 325);
+		line(75, 50, 0, 75);
+		line(15, 350, 15, 100);
+		line(15, 100, 60, 85);
+		line(60, 85, 55, 325);
+		ellipse(25, 200, 15);
+		fill(0);
+		text("Tavern", 15, 85);
+	pop();
+}
+
+function textBox(x, y, words) {
+	push();
+		fill(200, 38, 150);
+		rect(x, y, 200, 100, 50);
+		arc(x+50, y+100, 50, 50, 0, HALF_PI);
+		fill(0);
+		textSize(15);
+		text(words, x+25, y+45);
+	pop();
+}
