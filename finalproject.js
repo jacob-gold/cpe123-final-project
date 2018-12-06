@@ -250,7 +250,7 @@ function drawNote(x,y,rot){
 	pop();
 }
 
-function GameOver1() {
+function GameOverTavern() {
 	background(0)
 
 	push();
