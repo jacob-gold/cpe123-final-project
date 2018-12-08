@@ -1,0 +1,400 @@
+var GameOverInside;
+var l_mv, l_rot, r_rot;
+
+var updateDudeX, updateDudeY;
+
+var walking;
+var arm_rot;
+
+var sc;
+function setup()
+{
+	createCanvas(800, 400)
+
+	firstButton = createButton('Save Princess')
+	firstButton.hide();
+	secondButton = createButton('Someone else can do that')
+	secondButton.hide();
+
+	GameOverInside = false
+
+	l_mv = true;
+	l_rot = r_rot = 0;
+
+	updateDudeX = updateDudeY = 0
+	walking = false
+
+	sc = 1.3;
+
+
+
+}
+
+function draw()
+{
+
+	background(255);
+	insideTavern()
+	
+	if(GameOverInside)
+	{
+		GameOverTavern()
+	}
+
+}
+
+
+function insideTavern(){
+
+
+drawCrab(330, -30)
+textBox(530, 100, 'Help! A cyclop has trapped \n Princess Butter in a tower!', 255);
+
+push()
+
+scale(sc)
+dude(150 + updateDudeX, 150 + updateDudeY);
+
+pop()
+
+table(0, 0)
+
+push()
+
+firstButton.show();
+firstButton.size(100, 50);
+firstButton.position(300, 300);
+firstButton.mousePressed(SavePrincess)
+
+secondButton.show();
+secondButton.size(100, 50);
+secondButton.position(450, 300);
+secondButton.mousePressed(someoneElse);
+
+pop()
+
+
+	if(walking)
+	{
+		dudeWalk()
+		updateDudeX += 3
+	}
+
+	if(updateDudeX > 450)
+		{
+			updateDudeX = 450
+			sc -= 0.1
+
+		}
+
+
+
+}
+
+function drawCrab(x, y){
+push();
+  translate(x, y)
+
+  //body
+
+
+     fill(255, 238, 77);
+     stroke(0);
+     quad(175, 275, 225, 275, 250, 330, 150, 330); 
+
+
+
+
+  //left limbs
+
+
+     triangle(135, 350, 145, 340, 145, 365); //joint left
+
+
+    push();
+  	translate(-30, 0);
+  	quad(180, 330, 200, 330, 170, 350, 165, 350); //left leg base
+    pop();
+
+
+    push();
+
+     translate(20, 0);
+     triangle(135, 350, 145, 340, 145, 365); //joint left
+
+     push();
+     	translate(-30, 0);
+    		quad(180, 330, 200, 330, 170, 350, 165, 350); //left leg base
+     pop();
+    
+    pop();
+
+
+
+  push();
+  	translate(30, -75);
+  	quad(120, 350, 130, 340, 132, 380, 127, 390); //left pincer base
+
+
+  	triangle(120, 350, 115, 320, 125, 345) //left pincer left
+  	triangle(125, 345, 130, 320, 130, 340) //left pincer right
+  pop()
+    
+
+
+
+  //right limbs
+
+
+  triangle(255, 340, 265, 350, 255, 365); //joint right
+
+
+  quad(230, 330, 250, 330, 265, 350, 260, 350); //right leg base
+
+    push();
+
+     translate(-20, 0);
+     triangle(255, 340, 265, 350, 255, 365); //joint right
+
+     quad(230, 330, 250, 330, 265, 350, 260, 350); //right leg base
+    
+    pop();
+
+
+
+
+  //right pincer
+
+
+  push()
+  translate(110, -87)
+  quad(120, 350, 130, 360, 132, 400, 127, 390); //right pincer base
+
+  triangle(120, 350, 120, 330, 127, 357) //right pincer left
+  triangle(127, 357, 130, 330, 130, 360) //right pincer right
+  pop();
+
+
+  //face
+
+  fill(255);
+
+  ellipse(179, 290, 10, 10); //left eye
+
+
+  push();
+  translate(43, 0)
+  ellipse(179, 290, 10, 10); //right eye
+
+  pop();
+
+  push();
+  translate(9, 5);
+  triangle(180, 300, 200, 300, 190, 310); //mouth
+  pop();
+pop();
+}
+
+
+function textBox(x, y, words, boxColor) {
+	push();
+		fill(boxColor);
+		rect(x, y, 200, 100, 50);
+		arc(x+50, y+100, 50, 50, 0, HALF_PI);
+		fill(0);
+		textSize(15);
+		text(words, x+15, y+45);
+	pop();
+}
+
+function dude(x, y){
+push();
+      translate(x,y);
+      //face
+      fill(190,140,90);
+      ellipse(0,0, 30,40);
+      //hat
+      fill(0,200,0);
+      triangle(20,-10, -5, -30, -15, -20);
+      //feather
+      for(var angle=0; angle<PI; angle+= PI/100){
+         var x0 = -20 + -30*cos(angle);
+         var y0 = -15 + -10*sin(angle);
+
+         var x1 = -20 + -20*cos(angle);
+         var y1 = -20 + -10*sin(angle);
+
+         stroke(255,0,0);
+         line(x0,y0, x1,y1);
+      }
+      //hat
+      stroke(0);
+      fill(0,100,0);
+      triangle(-20,-10, 20,-10, -15,-24);
+      fill(200,0,0);     
+      //torso
+      fill(0,200,0);
+      rect(-10,20, 20, 50);
+      //lute/guitar
+      fill(90,70,40);
+      ellipse(15,50, 10, 30);
+      quad(15,45, 30,30, 30,35, 15, 55);
+      //arm
+      fill(0,200,0);
+      push();
+         translate(0,40);
+         rotate(arm_rot);
+         rect(0,0, 20,10);
+      pop();
+      //legs
+      fill(0);
+      push();
+         translate(0,70);
+         rotate(r_rot);
+         rect(0,0,7,40);
+      pop();
+      push();
+         translate(-10,70);
+         rotate(l_rot);
+         rect(0,0,7,40);
+      pop();
+      //cape
+      fill(0,100,0);
+      quad(10,20, -10,20, -20,80, -10,90);
+   pop();
+}
+
+  
+
+
+function table(x,y){
+push()
+	push();
+
+	strokeWeight(2)
+	stroke(255)
+	fill(0)
+
+	translate(x,y)
+	rect(0, 200, 20, 120);
+
+
+	//backleftleg
+	rect(40, 200, 20, 60);
+
+	//backrightleg
+	rect(160, 150, 20, 110);
+
+
+	//frontrightleg
+	stroke(255)
+	fill(0)
+	rect(120, 200, 20, 120);
+	//chairbody
+	stroke(0)
+	fill('#4CA64C')
+	quad(40, 150, 180, 150, 140, 200, 0, 200);
+
+	push()
+
+	translate(90, -20)
+	noFill()
+	ellipse(60, 150, 20, 10)
+
+	fill(0)
+	ellipse(60, 180, 20, 10)
+
+
+	line(50, 150, 50, 180)
+	line(70, 150, 70, 180)
+
+	pop();
+pop()
+	}
+
+function SavePrincess(){
+
+	firstButton.remove();
+	secondButton.remove();
+
+	walking = true
+
+
+
+}
+
+
+
+
+
+function someoneElse(){
+
+	secondButton.remove();
+	firstButton.remove();
+	GameOverInside = true
+
+	
+
+}
+
+function GameOverTavern() {
+	background(0)
+
+	push();
+		translate(200, -50)
+
+			fill(255, 0 ,0);
+			textSize(70);
+			textStyle(BOLD)
+			text('Game Over', width/25, height/3)
+	pop();
+
+			fill(255)
+			textSize(20)
+			text('You went to sleep and died of cancer' , width/10, 2*height/3)
+
+
+		push();
+
+			translate(width/2, height/2)
+			rotate(3/2*PI)
+			dude(-130, -50)
+		pop();
+	deadEmoji(width/2, 165);
+}
+
+function deadEmoji(x, y){
+
+	translate(x, y)
+		fill(255,204,51);	
+		ellipse(0, 0, 150);
+		strokeWeight(5);
+
+	push();
+		
+		fill(0);
+		line(-40, -40 , -20, -20)
+		line(-40, -20, -20, -40)
+
+		translate(55, 0);
+		line(-40, -40 , -20, -20)
+		line(-40, -20, -20, -40)
+	pop();
+
+		line(-40, 30, 35, 30)
+}
+
+function dudeWalk(){
+   if(l_mv){
+      l_rot+=PI/80;
+      r_rot-=PI/80;
+   }
+   if(!l_mv){
+      r_rot+=PI/80;
+      l_rot -= PI/80;
+   }
+   if(l_rot>= PI/8 || r_rot >= PI/8)
+      l_mv = !l_mv;
+
+  println(l_rot)
+}
