@@ -1,6 +1,6 @@
 function setup()
 {
-   createCanvas(400,400);
+   createCanvas(800,400);
 
    set_scene4();
 }
@@ -12,9 +12,9 @@ function draw(){
 
 function scene4(){
    grass();
-   tower(250,270);
+   tower(250+400,270);
    push();
-      translate(200,-20);
+      translate(200+400,-20);
       scale(.4);
       armadillo();
    pop();
@@ -30,13 +30,13 @@ function scene4(){
       }
    }
 
-   if(dudex <= 150){
+   if(dudex <= 150+400){
       dudeWalk();
       dudex += .75;
       dude(dudex, dudey);
    }
 
-   if(dudex >= 150 && !scene4_op1 && !scene4_op2 && !scene4_op3){
+   if(dudex >= 150+400 && !scene4_op1 && !scene4_op2 && !scene4_op3){
       fill(255);
       textAlign(CENTER);
       rect(70, 160, 100,50);
@@ -58,17 +58,17 @@ function scene4(){
    }
 
    if(scene4_op1){
-      if(dudex <=320){
+      if(dudex <=320+400){
          ladder();
          dudeWalk();
          dudex += .75;
       }
-      if(dudex >= 320 && dudey >= 50){
+      if(dudex >= 320+400 && dudey >= 50){
          ladder();
          dudeWalk();
          dudey -= .75;
       }
-      if(dudex >= 320 && dudey <= 50){
+      if(dudex >= 320+400 && dudey <= 50){
          scene4_op1res = true;
          scene4_op1 = false;
       }
@@ -87,9 +87,9 @@ function scene4(){
          for(var i=0; i<num_notes; i++){
             note[i].renderN();
             note[i].updateN();
-            if(note[i].x <= -10 || note[i].x >= 410 || note[i].y <= -10 || note[i].y >= 410){
+            if(note[i].x <= -10 || note[i].x >= 410+400 || note[i].y <= -10 || note[i].y >= 410){
                note.splice(i,1);
-               note.push(new drawNote(dudex+10, dudey+30));
+               note.push(new drawNote(dudex+10+400, dudey+30));
             }
          }
       time += 1;
@@ -110,8 +110,8 @@ function scene4(){
       fill(255,0,0);
       textAlign(CENTER);
       textSize(50);
-      text('You got stuck', 200, 50);
-      text('in the tower', 200, 100);
+      text('You got stuck', width/2, 50);
+      text('in the tower', width/2, 100);
    }
    if(scene4_op2){
       if(!arm_up)
@@ -126,7 +126,7 @@ function scene4(){
       for(var i=0; i<num_flower; i++){
          flowers[i].renderF();
          flowers[i].updateF();
-         if(flowers[i].loc.x <= -10 || flowers[i].loc.x >= 410 || flowers[i].loc.y <= -10 || flowers[i].loc.y >= 410){
+         if(flowers[i].loc.x <= -10 || flowers[i].loc.x >= 410+400 || flowers[i].loc.y <= -10 || flowers[i].loc.y >= 410){
             flowers.splice(i,1);
             flowers.push(new flower(dudex, dudey-50));
          }
@@ -149,8 +149,8 @@ function scene4(){
 
       fill(255,0,0);
       textSize(40);
-      text('Poisonous Flowers,', 200,120);
-      text('You Died!', 200,160);
+      text('Poisonous Flowers,', width/2,120);
+      text('You Died!', width/2,160);
    }
    if(scene4_op3){
       if(time <= 5*60){
@@ -167,7 +167,7 @@ function scene4(){
       for(var i=0; i<num_notes; i++){
          note[i].renderN();
          note[i].updateN();
-         if(note[i].x <= -10 || note[i].x >= 410 || note[i].y <= -10 || note[i].y >= 410){
+         if(note[i].x <= -10 || note[i].x >= 410+400 || note[i].y <= -10 || note[i].y >= 410){
             note.splice(i,1);
             note.push(new drawNote(dudex+10, dudey+30));
          }
@@ -302,7 +302,7 @@ function set_scene4(){
       cloudpiece.push(color(col,col,col));
    }
    for(var i=0; i<num_clouds*5;i+=5){
-      c_loc.push(createVector(random(-10,345),random(-10,180)));
+      c_loc.push(createVector(random(-10,345+400),random(-10,180)));
       d_cloud.push(createVector(random(.1,.5), random(-.1,.1)));
    }
 }
@@ -336,8 +336,8 @@ function ladder(){
    push();
       strokeWeight(4);
       stroke(200,100,0);
-      line(310,100, 310,350);
-      line(340,100, 340,350);
+      line(310+400,100, 310+400,350);
+      line(340+400,100, 340+400,350);
       for(var i=100; i<=350; i+=10){
          line(310,i, 340,i);
       }
