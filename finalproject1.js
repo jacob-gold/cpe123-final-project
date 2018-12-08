@@ -7,9 +7,37 @@ var boxeurX;
 var boxeurY;
 var boxeurRot;
 
-var scene = 4;
+var scene1boolean;
+var scene2boolean;
+var scene4Boolean;
 
 var ele;
+var dQ;
+var itsy;
+var ring;
+var london;
+
+var scene2boolean2 = false;
+
+var scene2counter = 0;
+
+var gameOverOutside;
+
+var img;
+
+var imgSplash;
+
+var tavernInside;
+
+var GameOverInside;
+var l_mv, lrot, r_rot;
+
+var updateDudeX, updateDudeY;
+
+var walking;
+var arm_rot;
+
+var sc;
 
 function setup() {
 
@@ -28,31 +56,100 @@ function setup() {
 	r_rot = 0;
 	l_rot = 0;
 
+   gameOverOutside = false;
+
+   var scene1boolean = false;
+   var scene2boolean= false;
+   var scene4Boolean = false;
+
+   firstButton = createButton('Save Princess')
+   firstButton.hide();
+   secondButton = createButton('Someone else can do that')
+   secondButton.hide();
+
+   GameOverInside = false
+
+   l_mv = true;
+   l_rot = r_rot = 0;
+
+   updateDudeX = updateDudeY = 0
+   walking = false
+
+   sc = 1.3;
+
    button1 = createButton('RAM RANCH');
    button1.hide();
-   button2 = createButton("OngoingThing");
+   button2 = createButton("ONGOING THING");
    button2.hide();
    button3 = createButton("TOKYO DRIFT");
    button3.hide();
+   playButton = createButton("CLICK TO PLAY");
+   startButton = createButton("START GAME");
+   startButton.hide();
 
    ele = createAudio('02 Ongoing Thing (feat. Oddisee).mp3');
 
    ele.volume(0.5);
 
+   dQ = createAudio('Dragon Quest XI Soundtrack - Main Theme - OST (192kbit_AAC).m4a')
 
+   dQ.volume(0.5);
+
+   itsy = createAudio('itsybitsyspider.m4a');
+
+   itsy.volume(0.5);
+
+   ring = createAudio('ringaroundtherosy.m4a');
+
+   ring.volume(0.5);
+
+   london = createAudio('londonbridgeisfallingdown.m4a');
+
+   london.volume(0.5);
+
+   img = loadImage('Tavern_BG.jpg');
+
+   imgSplash = loadImage('treeBG.jpg');
+
+   tavernInside = loadImage('Tavarn_inside.jpg');
+
+   set_scene4();
 }
 
 function draw() {
 
-	background(255);
-	
-   outsideTavern();
-   durationControl();
+	background(imgSplash);
 
-	//if correct option chosen
+   splashScreen();
+
+   if(scene1boolean) {
+      insideTavern();
+      scene2counter++;
+   }
+
+   if(scene2counter >= 400) {
+      scene2transition();
+   }
+
+   if (GameOverInside) {
+      GameOverTavern();
+   }
+   
+	if(scene2boolean) {
+      outsideTavern();
+      durationControl();
+   }
+
+   if (gameOverOutside) {
+      GameOverBigGuy();
+   }
 	
-   //set_scene4();
-	//scene4();
+	if(scene4Boolean) {
+      background(0, 255, 255);
+      scene4();
+   }
+
+   
 
 }
 
@@ -366,6 +463,7 @@ function GameOverBigGuy() {
 	background(0)
 
 	push();
+      BloodDripping();
 		translate(0, -50)
 
 			fill(255, 0 ,0);
@@ -391,12 +489,20 @@ function GameOverBigGuy() {
 }
 
 function outsideTavern() {
-	
+
+   
+
+   push();
+
+   background(255)
+
+   image(img, 0, 0);
+
 	dude(310, 200);
 	
 	push();
 
-		tavernDoor();
+		//tavernDoor();
 	
    	boxeur(boxeurX, boxeurY);
 	
@@ -404,39 +510,36 @@ function outsideTavern() {
    
    pop();
 
-   setTimeout(outsideTavern2, 2000);
+   setTimeout(outsideTavern2, 1000);
    
    textBox(280, 75, "Which song will you play \n to get this guy to leave \n you alone?", color(40, 50, 200));
-   
-   choiceBox(500, 75, "", color(230, 40, 100));
 
    button1.show();
    button1.size(100, 50)
    button1.position(550, 360)
    button1.mousePressed(ramRanch);
-   
-   choiceBox(500, 175, "", color(37, 180, 43));
 
    button2.show();
    button2.size(100, 50);
    button2.position(550, 460);
    button2.mousePressed(OngoingThing); 
-   choiceBox(500, 275, "", color(150, 20, 190));
 
    button3.show();
    button3.size(100, 50);
    button3.position(550, 560);
    button3.mousePressed(tokyo);
 
+pop();
+
 }
 
 function outsideTavern2() {
     push();
       boxeurX += 3;
-      if(boxeurX >= 90) {
+      if(boxeurX == 90) {
          boxeurX -= 3;
          boxeurY +=5;
-         if(boxeurY >= 30) {
+         if(boxeurY == 30) {
             boxeurY -= 5;
             boxeurRot += PI/48;
             if(boxeurRot >= PI/35) {
@@ -450,28 +553,47 @@ function outsideTavern2() {
 function ramRanch() {
    
    button1.remove();
-   clearCanvas();
-   GameOverBigGuy();
+   button2.remove();
+   button3.remove();
+   gameOverOutside = true;
 
 }
 
 function OngoingThing() {
    
+   button1.remove();
    button2.remove();
-   ele.play().time(220); 
-   ele.showControls();
+   button3.remove();
+   setTimeout(function() {  ele.play().time(219);}, 150);
 
+   boxeurX-= 1;
+   boxeurY-= 1;
+
+   setTimeout(transitionS4, 5000);
+
+}
+
+function transitionS4() {
+   scene4Boolean = true;
 }
 
 function tokyo() {
 
+   button1.remove();
+   button2.remove();
    button3.remove();
+   gameOverOutside = true;
 
 }
 
 function durationControl() {
-   if(ele.time() >= 225) {
+   
+   if(ele.time() >= 235) {
       ele.stop();
+   }
+
+   if(dQ.time() >= 100) {
+      dQ.stop();
    }
 }
 
@@ -561,6 +683,9 @@ function scene4(){
    }
 
    if(scene4_op1){
+
+      setTimeout(function() { itsy.play();}, 150);
+
       if(dudex <=(280/400)*width){
          ladder();
          dudeWalk();
@@ -574,6 +699,9 @@ function scene4(){
       if(dudex >= (280/400)*width && dudey <= 50){
          scene4_op1res = true;
          scene4_op1 = false;
+
+         itsy.pause();
+
       }
 
       dude(dudex, dudey);
@@ -615,14 +743,22 @@ function scene4(){
       textSize(50);
       text('You got stuck', width/2, 50);
       text('in the tower', width/2, 100);
+
+      itsy.stop();
+
    }
    if(scene4_op2){
+
+      setTimeout(function() { ring.play();}, 150);
+
       if(!arm_up)
          arm_rot -= PI/80;
       if(arm_up)
          arm_rot += PI/80;
-      if(arm_rot <= -PI/4 || arm_rot >= PI/4)
+      if(arm_rot <= -PI/4 || arm_rot >= PI/4) {
          arm_up = !arm_up;
+         ring.pause();
+      }
 
       dude(dudex, dudey);
 
@@ -654,15 +790,23 @@ function scene4(){
       textSize(40);
       text('Poisonous Flowers,', width/2,120);
       text('You Died!', width/2,160);
+
+      ring.stop();
+
    }
    if(scene4_op3){
+
+      setTimeout(function() { london.play();}, 150);
+
       if(time <= 5*60){
          if(!arm_up)
             arm_rot -= PI/80;
          if(arm_up)
             arm_rot += PI/80;
-         if(arm_rot <= -PI/4 || arm_rot >= PI/4)
+         if(arm_rot <= -PI/4 || arm_rot >= PI/4) {
             arm_up = !arm_up;
+            london.pause();
+         }
       }
 
       dude(dudex, dudey);
@@ -728,33 +872,31 @@ function scene4(){
 }
 
 function mousePressed(){
-   if(scene == 4){
-      if(mouseX >= 70 && mouseX <= 170 && mouseY >= 160 && mouseY <= 210){
-         scene4_op1 = true;
-         num_notes = 10;
-         for(var i=0; i<num_notes; i++){
-            note.push(new drawNote(dudex+10, dudey+30));
-         }
+   if(mouseX >= 70 && mouseX <= 170 && mouseY >= 160 && mouseY <= 210){
+      scene4_op1 = true;
+      num_notes = 10;
+      for(var i=0; i<num_notes; i++){
+         note.push(new drawNote(dudex+10, dudey+30));
       }
-      if(mouseX >= 180 && mouseX <= 280 && mouseY >= 160 && mouseY <= 210){
-         scene4_op2 = true;
-         num_flower = 10;
-         for(var i=0; i<num_flower; i++){
-            flowers.push(new flower(dudex, dudey-50));
-         }
+   }
+   if(mouseX >= 180 && mouseX <= 280 && mouseY >= 160 && mouseY <= 210){
+      scene4_op2 = true;
+      num_flower = 10;
+      for(var i=0; i<num_flower; i++){
+         flowers.push(new flower(dudex, dudey-50));
       }
-      if(mouseX >= 290 && mouseX <= 390 && mouseY >= 160 && mouseY <= 210){
-         scene4_op3 = true;
-         num_notes = 10;
-         for(var i=0; i<num_notes; i++){
-            note.push(new drawNote(dudex+10, dudey+30));
-         }
+   }
+   if(mouseX >= 290 && mouseX <= 390 && mouseY >= 160 && mouseY <= 210){
+      scene4_op3 = true;
+      num_notes = 10;
+      for(var i=0; i<num_notes; i++){
+         note.push(new drawNote(dudex+10, dudey+30));
+      }
 
-         colorMode(RGB, 255,255,255,100);
-         num_spark = 2;
-         for(var i=0; i<num_spark; i++){
-            createS.push(new spark());
-         }
+      colorMode(RGB, 255,255,255,100);
+      num_spark = 2;
+      for(var i=0; i<num_spark; i++){
+         createS.push(new spark());
       }
    }
 }
@@ -788,7 +930,6 @@ function set_scene4(){
    arm_rot = 0;
    arm_up = false;
 
-   scene = 4;
    scene4_op1 = false;
    scene4_op1res = false;
    scene4_op2 = false;
@@ -862,6 +1003,32 @@ function dudeWalk(){
    if(l_rot>= PI/8 || r_rot >= PI/8)
       l_mv = !l_mv;
 }
+
+function drawNote(n_x,n_y){
+   this.x = n_x;
+   this.y = n_y;
+   this.d_n = createVector(random(-.5,.5), random(-1,0));
+
+   this.renderN = function(){
+      push();
+         translate(this.x,this.y);
+         stroke(255);
+         fill(255);
+         strokeWeight(2);
+         line(-5,0, 5,0);
+         line(-5,0, -5,10);
+         line(5,0, 5,7);
+         ellipse(-7,10, 5);
+         ellipse(3,7, 5);
+      pop();
+   };
+
+   this.updateN = function(){
+      this.x += this.d_n.x;
+      this.y += this.d_n.y;
+   }
+}
+
 function grass(){
    push();
       strokeWeight(4);
@@ -888,6 +1055,64 @@ function drawCloud(x,y,i){
       ellipse(5,-20, 30);
    pop();
 }
+
+function dude(x,y){
+   push();
+      translate(x,y);
+      //face
+      fill(190,140,90);
+      ellipse(0,0, 30,40);
+      //hat
+      fill(0,200,0);
+      triangle(20,-10, -5, -30, -15, -20);
+      //feather
+      for(var angle=0; angle<PI; angle+= PI/100){
+         var x0 = -20 + -30*cos(angle);
+         var y0 = -15 + -10*sin(angle);
+
+         var x1 = -20 + -20*cos(angle);
+         var y1 = -20 + -10*sin(angle);
+
+         stroke(255,0,0);
+         line(x0,y0, x1,y1);
+      }
+      //hat
+      stroke(0);
+      fill(0,100,0);
+      triangle(-20,-10, 20,-10, -15,-24);
+      fill(200,0,0);     
+      //torso
+      fill(0,200,0);
+      rect(-10,20, 20, 50);
+      //lute/guitar
+      fill(90,70,40);
+      ellipse(15,50, 10, 30);
+      quad(15,45, 30,30, 30,35, 15, 55);
+      //arm
+      fill(0,200,0);
+      push();
+         translate(0,40);
+         rotate(arm_rot);
+         rect(0,0, 20,10);
+      pop();
+      //legs
+      fill(0);
+      push();
+         translate(0,70);
+         rotate(r_rot);
+         rect(0,0,7,40);
+      pop();
+      push();
+         translate(-10,70);
+         rotate(l_rot);
+         rect(0,0,7,40);
+      pop();
+      //cape
+      fill(0,100,0);
+      quad(10,20, -10,20, -20,80, -10,90);
+   pop();
+}
+
 function tower(x,y){
    push();
       translate(x,y);
@@ -1094,4 +1319,412 @@ function PSys(loc, rg, b0, num){
          }
       }
    }
+}
+
+function BloodDripping(){
+noStroke();
+ for(var i = 0; i < 200; i++){
+   fill(random(170,190), random(0,30), random(0,20))
+   ellipse((random(0,width)), (random(height/6, height)),random(.5,2), random(.5,2));
+   ellipse((random(0,width)), (random(height/6, height)),random(1,5), random(1,5));
+   ellipse((random(0,width)), (random(height/6, height)),random(.5,2), random(.5,2))
+   ellipse((random(0,width)), (random(height/6, height)),random(1,2), random(1,2)); 
+   }
+ }
+
+function splashScreen() {
+   push();
+      stroke(0);
+      fill(0);
+      textSize(150);
+      stroke(255);
+      fill(255);
+      textAlign(CENTER);
+      textFont("Impact")
+      text("Lute Journey", width/2, height/2)
+
+      startButton.size(200, 50);
+      startButton.position(width/2-100, height/2+400);
+      startButton.mousePressed(startButt);
+
+      playButton.size(200, 50);
+      playButton.position(width/2-100, height/2+400);
+      playButton.mousePressed(playButt);
+
+   pop();
+
+}
+
+function playButt() {
+
+   playButton.remove();
+   setTimeout(function() {  dQ.play().time(18);;}, 150);
+   startButton.show();
+
+}
+
+function startButt() {
+   
+   startButton.remove();
+   dQ.stop();
+   scene1boolean = true;
+
+}
+
+function insideTavern(){
+
+
+background(255);
+image(tavernInside, 0, 0);
+
+drawCrab(330, -30)
+textBox(530, 100, 'Help! An invisible evil \n has trapped Princess \n Butter in a tower!', 255);
+
+push()
+
+scale(sc)
+dude(150 + updateDudeX, 150 + updateDudeY);
+
+pop()
+
+//table(0, 0)
+
+push()
+
+firstButton.show();
+firstButton.size(100, 50);
+firstButton.position(300, 400);
+firstButton.mousePressed(SavePrincess)
+
+secondButton.show();
+secondButton.size(100, 50);
+secondButton.position(450, 400);
+secondButton.mousePressed(someoneElse);
+
+pop()
+
+
+   if(walking)
+   {
+      dudeWalk()
+      updateDudeX += 3
+   }
+
+   if(updateDudeX > 450)
+      {
+         updateDudeX = 450
+         sc -= 0.1
+
+      }
+
+
+
+}
+
+function drawCrab(x, y){
+push();
+  translate(x, y)
+
+  //body
+
+
+     fill(255, 238, 77);
+     stroke(0);
+     quad(175, 275, 225, 275, 250, 330, 150, 330); 
+
+
+
+
+  //left limbs
+
+
+     triangle(135, 350, 145, 340, 145, 365); //joint left
+
+
+    push();
+   translate(-30, 0);
+   quad(180, 330, 200, 330, 170, 350, 165, 350); //left leg base
+    pop();
+
+
+    push();
+
+     translate(20, 0);
+     triangle(135, 350, 145, 340, 145, 365); //joint left
+
+     push();
+      translate(-30, 0);
+         quad(180, 330, 200, 330, 170, 350, 165, 350); //left leg base
+     pop();
+    
+    pop();
+
+
+
+  push();
+   translate(30, -75);
+   quad(120, 350, 130, 340, 132, 380, 127, 390); //left pincer base
+
+
+   triangle(120, 350, 115, 320, 125, 345) //left pincer left
+   triangle(125, 345, 130, 320, 130, 340) //left pincer right
+  pop()
+    
+
+
+
+  //right limbs
+
+
+  triangle(255, 340, 265, 350, 255, 365); //joint right
+
+
+  quad(230, 330, 250, 330, 265, 350, 260, 350); //right leg base
+
+    push();
+
+     translate(-20, 0);
+     triangle(255, 340, 265, 350, 255, 365); //joint right
+
+     quad(230, 330, 250, 330, 265, 350, 260, 350); //right leg base
+    
+    pop();
+
+
+
+
+  //right pincer
+
+
+  push()
+  translate(110, -87)
+  quad(120, 350, 130, 360, 132, 400, 127, 390); //right pincer base
+
+  triangle(120, 350, 120, 330, 127, 357) //right pincer left
+  triangle(127, 357, 130, 330, 130, 360) //right pincer right
+  pop();
+
+
+  //face
+
+  fill(255);
+
+  ellipse(179, 290, 10, 10); //left eye
+
+
+  push();
+  translate(43, 0)
+  ellipse(179, 290, 10, 10); //right eye
+
+  pop();
+
+  push();
+  translate(9, 5);
+  triangle(180, 300, 200, 300, 190, 310); //mouth
+  pop();
+pop();
+}
+
+
+function textBox(x, y, words, boxColor) {
+   push();
+      fill(boxColor);
+      rect(x, y, 200, 100, 50);
+      arc(x+50, y+100, 50, 50, 0, HALF_PI);
+      fill(0);
+      textSize(15);
+      text(words, x+15, y+45);
+   pop();
+}
+
+function dude(x, y){
+push();
+      translate(x,y);
+      //face
+      fill(190,140,90);
+      ellipse(0,0, 30,40);
+      //hat
+      fill(0,200,0);
+      triangle(20,-10, -5, -30, -15, -20);
+      //feather
+      for(var angle=0; angle<PI; angle+= PI/100){
+         var x0 = -20 + -30*cos(angle);
+         var y0 = -15 + -10*sin(angle);
+
+         var x1 = -20 + -20*cos(angle);
+         var y1 = -20 + -10*sin(angle);
+
+         stroke(255,0,0);
+         line(x0,y0, x1,y1);
+      }
+      //hat
+      stroke(0);
+      fill(0,100,0);
+      triangle(-20,-10, 20,-10, -15,-24);
+      fill(200,0,0);     
+      //torso
+      fill(0,200,0);
+      rect(-10,20, 20, 50);
+      //lute/guitar
+      fill(90,70,40);
+      ellipse(15,50, 10, 30);
+      quad(15,45, 30,30, 30,35, 15, 55);
+      //arm
+      fill(0,200,0);
+      push();
+         translate(0,40);
+         rotate(arm_rot);
+         rect(0,0, 20,10);
+      pop();
+      //legs
+      fill(0);
+      push();
+         translate(0,70);
+         rotate(r_rot);
+         rect(0,0,7,40);
+      pop();
+      push();
+         translate(-10,70);
+         rotate(l_rot);
+         rect(0,0,7,40);
+      pop();
+      //cape
+      fill(0,100,0);
+      quad(10,20, -10,20, -20,80, -10,90);
+   pop();
+}
+
+  
+
+
+function table(x,y){
+push()
+   push();
+
+   strokeWeight(2)
+   stroke(255)
+   fill(0)
+
+   translate(x,y)
+   rect(0, 200, 20, 120);
+
+
+   //backleftleg
+   rect(40, 200, 20, 60);
+
+   //backrightleg
+   rect(160, 150, 20, 110);
+
+
+   //frontrightleg
+   stroke(255)
+   fill(0)
+   rect(120, 200, 20, 120);
+   //chairbody
+   stroke(0)
+   fill('#4CA64C')
+   quad(40, 150, 180, 150, 140, 200, 0, 200);
+
+   push()
+
+   translate(90, -20)
+   noFill()
+   ellipse(60, 150, 20, 10)
+
+   fill(0)
+   ellipse(60, 180, 20, 10)
+
+
+   line(50, 150, 50, 180)
+   line(70, 150, 70, 180)
+
+   pop();
+pop()
+   }
+
+function SavePrincess(){
+
+   firstButton.remove();
+   secondButton.remove();
+
+   walking = true
+
+   scene2boolean2 = true;
+
+}
+
+
+function scene2transition() {
+      scene2boolean = true;
+}
+
+function someoneElse(){
+
+   secondButton.remove();
+   firstButton.remove();
+   GameOverInside = true
+
+   
+
+}
+
+function GameOverTavern() {
+   background(0)
+
+   push();
+      translate(200, -50)
+
+         fill(255, 0 ,0);
+         textSize(70);
+         textStyle(BOLD)
+         text('Game Over', width/25, height/3)
+   pop();
+
+         fill(255)
+         textSize(20)
+         text('You went to sleep and died of cancer' , width/10, 2*height/3)
+
+
+      push();
+
+         translate(width/2, height/2)
+         rotate(3/2*PI)
+         dude(-130, -50)
+      pop();
+   deadEmoji(width/2, 165);
+}
+
+function deadEmoji(x, y){
+
+   translate(x, y)
+      fill(255,204,51); 
+      ellipse(0, 0, 150);
+      strokeWeight(5);
+
+   push();
+      
+      fill(0);
+      line(-40, -40 , -20, -20)
+      line(-40, -20, -20, -40)
+
+      translate(55, 0);
+      line(-40, -40 , -20, -20)
+      line(-40, -20, -20, -40)
+   pop();
+
+      line(-40, 30, 35, 30)
+}
+
+function dudeWalk(){
+   if(l_mv){
+      l_rot+=PI/80;
+      r_rot-=PI/80;
+   }
+   if(!l_mv){
+      r_rot+=PI/80;
+      l_rot -= PI/80;
+   }
+   if(l_rot>= PI/8 || r_rot >= PI/8)
+      l_mv = !l_mv;
+
 }
